@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DB_ETAFASIONModel1.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DB_ETAFASION.dbo.TBL_FLUJOS' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="TBL_FLUJOS">
+          <Key>
+            <PropertyRef Name="IDFLUJO" />
+          </Key>
+          <Property Name="IDFLUJO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NOMBREFLUJO" Type="varchar(max)" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'DB_ETAFASION.dbo.TBL_OPCIONES' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="TBL_OPCIONES">
+          <Key>
+            <PropertyRef Name="IDOPCION" />
+          </Key>
+          <Property Name="IDOPCION" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NOMBREOPCION" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="TBL_TRANSACCION_IVR">
+          <Key>
+            <PropertyRef Name="IDIVRV" />
+          </Key>
+          <Property Name="IDIVRV" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CONVERSATIONID" Type="varchar(max)" />
+          <Property Name="IDENTIFICACIONIVR" Type="varchar(max)" />
+          <Property Name="FLUJO" Type="varchar(max)" />
+          <Property Name="TRANSACCIONESIVR" Type="varchar(max)" />
+          <Property Name="FECHAIVR" Type="datetime" />
+        </EntityType>
+        <EntityContainer Name="DB_ETAFASIONModel1StoreContainer">
+          <EntitySet Name="TBL_TRANSACCION_IVR" EntityType="Self.TBL_TRANSACCION_IVR" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TBL_FLUJOS" EntityType="Self.TBL_FLUJOS" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [TBL_FLUJOS].[IDFLUJO] AS [IDFLUJO], 
+    [TBL_FLUJOS].[NOMBREFLUJO] AS [NOMBREFLUJO]
+    FROM [dbo].[TBL_FLUJOS] AS [TBL_FLUJOS]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="TBL_OPCIONES" EntityType="Self.TBL_OPCIONES" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [TBL_OPCIONES].[IDOPCION] AS [IDOPCION], 
+    [TBL_OPCIONES].[NOMBREOPCION] AS [NOMBREOPCION]
+    FROM [dbo].[TBL_OPCIONES] AS [TBL_OPCIONES]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DB_ETAFASIONModel1" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="TBL_TRANSACCION_IVR">
+          <Key>
+            <PropertyRef Name="IDIVRV" />
+          </Key>
+          <Property Name="IDIVRV" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CONVERSATIONID" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IDENTIFICACIONIVR" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="FLUJO" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TRANSACCIONESIVR" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="FECHAIVR" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="TBL_FLUJOS">
+          <Key>
+            <PropertyRef Name="IDFLUJO" />
+          </Key>
+          <Property Name="IDFLUJO" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NOMBREFLUJO" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="TBL_OPCIONES">
+          <Key>
+            <PropertyRef Name="IDOPCION" />
+          </Key>
+          <Property Name="IDOPCION" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NOMBREOPCION" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityContainer Name="DB_ETAFASIONEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TBL_TRANSACCION_IVR" EntityType="Self.TBL_TRANSACCION_IVR" />
+          <EntitySet Name="TBL_FLUJOS" EntityType="Self.TBL_FLUJOS" />
+          <EntitySet Name="TBL_OPCIONES" EntityType="Self.TBL_OPCIONES" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DB_ETAFASIONModel1StoreContainer" CdmEntityContainer="DB_ETAFASIONEntities">
+          <EntitySetMapping Name="TBL_TRANSACCION_IVR">
+            <EntityTypeMapping TypeName="DB_ETAFASIONModel1.TBL_TRANSACCION_IVR">
+              <MappingFragment StoreEntitySet="TBL_TRANSACCION_IVR">
+                <ScalarProperty Name="IDIVRV" ColumnName="IDIVRV" />
+                <ScalarProperty Name="CONVERSATIONID" ColumnName="CONVERSATIONID" />
+                <ScalarProperty Name="IDENTIFICACIONIVR" ColumnName="IDENTIFICACIONIVR" />
+                <ScalarProperty Name="FLUJO" ColumnName="FLUJO" />
+                <ScalarProperty Name="TRANSACCIONESIVR" ColumnName="TRANSACCIONESIVR" />
+                <ScalarProperty Name="FECHAIVR" ColumnName="FECHAIVR" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TBL_FLUJOS">
+            <EntityTypeMapping TypeName="DB_ETAFASIONModel1.TBL_FLUJOS">
+              <MappingFragment StoreEntitySet="TBL_FLUJOS">
+                <ScalarProperty Name="IDFLUJO" ColumnName="IDFLUJO" />
+                <ScalarProperty Name="NOMBREFLUJO" ColumnName="NOMBREFLUJO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TBL_OPCIONES">
+            <EntityTypeMapping TypeName="DB_ETAFASIONModel1.TBL_OPCIONES">
+              <MappingFragment StoreEntitySet="TBL_OPCIONES">
+                <ScalarProperty Name="IDOPCION" ColumnName="IDOPCION" />
+                <ScalarProperty Name="NOMBREOPCION" ColumnName="NOMBREOPCION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,250 @@
+﻿@model AppReporteAgendamiento.Models.FiltroBusqueda
+
+@Html.LabelFor(model => model.fechaDesde, new { htmlAttributes = new { @class = "control-label col-md-2" } })
+<div class="form-group" ,>
+
+    <div class="col-md-10" , style="padding-left: 0px;">
+
+        @Html.EditorFor(model => model.fechaDesde, new { htmlAttributes = new { @class = "datepicker", autocomplete = "off" } })
+        @Html.EditorFor(model => model.fechaHasta, new { htmlAttributes = new { @class = "datepicker1", autocomplete = "off" } })
+    </div>
+</div>
+
+<br />
+
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10" style="margin-left: 41%; margin-top: -3.5%;">
+        <input id="buscar" type="submit" value="Filtrar" class="btn btn-default" ,style="padding: 2px 12px !important;" />
+    </div>
+</div>
+
+
+@*<div class="col-sm-6 col-md-4 col-xl-4" style="width: 14.333333%; margin-bottom: 31px">
+        <div class="card no-shadow rm-border bg-transparent widget-chart text-left">
+            <div class="widget-chart-content">
+                <div class="widget-subheading"># Consultas x Cliente</div>
+                <div id="divxCliente" class="widget-numbers"></div>
+            </div>
+        </div>
+    </div>*@
+
+
+
+<br />
+
+<div id="" class="tabcontent1">
+    <table id="logTable" class="display" cellspacing="0" style="width:100%">
+        <thead>
+            <tr>
+                <th>FORMULARIO</th>
+                <th>ID INTERACTION</th>
+                <th>NOMBRE</th>
+                <th>CÉDULA</th>
+                <th>CORREO</th>
+                <th>TELÉFONO</th>
+                <th>COMENTARIO</th>
+                <th>EMPRESA</th>
+                <th>SERVICIO</th>
+                <th>CATEGORÍA</th>
+                <th>ACCIÓN</th>
+                <th>TIPO</th>
+                <th>FECHA</th>
+                <th>AGENTE</th>
+                <th>EMISOR SOLICITUD</th>
+                <th>TIENDA</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+<a href="@Url.Action("ReporteETAFASHION","Home")">Exportar Reporte General</a>
+
+
+
+@section scripts{
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+ 
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/plug-ins/1.10.12/sorting/datetime-moment.js"></script>
+    <link href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            tabla();
+
+                function tabla() {
+
+                    $("#logTable").DataTable(
+                        {
+                            "ordering": false,
+                            'responsive': true,
+                            "ajax": {
+
+                                "url": '@Url.Action("GetList", "Home")',
+                                "type": "POST",
+                                "dataSrc": "",
+                                "datatype": "json"
+                            },
+
+                             "columnDefs": [
+                                 { targets: [0], visible: false, searchable: true, orderable: false },
+                                 { targets: [1], visible: true, searchable: true, orderable: false },  //
+                                 { targets: [2], visible: true, searchable: true, orderable: true },  //consultas
+                                 { targets: [3], visible: true, searchable: true, orderable: false },  //Conversation
+                                 { targets: [4], visible: true, searchable: true, orderable: false },  //Cedula
+                                 { targets: [5], visible: true, searchable: true, orderable: false },//transacc
+                                 { targets: [6], visible: true, searchable: true, orderable: false },
+                                 { targets: [7], visible: true, searchable: true, orderable: true },
+                                 { targets: [8], visible: true, searchable: true, orderable: true },
+                                 { targets: [9], visible: true, searchable: true, orderable: true },
+                                 { targets: [10], visible: true, searchable: true, orderable: true },
+                                 { targets: [11], visible: true, searchable: true, orderable: true },
+                                {
+                                    targets: [12], visible: true, searchable: true, orderable: false,
+                                    render: function (data, type, full) {
+                                        return moment(data).format('DD/MM/YYYY HH:mm:ss')
+                                    }
+
+                                 },//Fecha,
+                                 { targets: [13], visible: true, searchable: true, orderable: true },
+                                 { targets: [14], visible: true, searchable: true, orderable: true },
+                                 { targets: [15], visible: true, searchable: true, orderable: true }
+
+
+                        ],
+                        "columns": [
+
+                            { "data": "formulario" },
+                            { "data": "id" },
+                            { "data": "nombre" },
+                            { "data": "Cedula" },
+                            { "data": "correo" },
+                            { "data": "telefono" },
+                            { "data": "comentario" },
+                            { "data": "empresa" },
+                            { "data": "servicio" },
+                            { "data": "categoria" },
+                            { "data": "accion" },
+                            { "data": "tipo" },
+                            { "data": "fecha" },
+                            { "data": "agente" },
+                            { "data": "emisor_solicitud" },
+                            { "data": "tienda" },
+
+
+                            ]
+                        });
+
+                }
+
+                $("#buscar").click(function (e) {
+
+                    $("#logTable").dataTable().fnDestroy();
+
+                     $("#logTable").DataTable(
+                         {
+                             "ordering": false,
+                            'responsive': true,
+                            "ajax": {
+                                "url": '@Url.Action("GetList", "Home")',
+                                "data": {
+                                    "fecha": { "fechaDesde": $('#fechaDesde').val(), "fechaHasta": $('#fechaHasta').val() }
+                                },
+                                "dataSrc": "",
+                                "type": "POST",
+                                "datatype": "json"
+                            },
+                            "deferRender": true,
+
+                            "columnDefs": [
+                                 { targets: [0], visible: false, searchable: true, orderable: false },
+                                 { targets: [1], visible: true, searchable: true, orderable: false },  //
+                                 { targets: [2], visible: true, searchable: true, orderable: false },  //consultas
+                                 { targets: [3], visible: true, searchable: true, orderable: false },  //Conversation
+                                 { targets: [4], visible: true, searchable: true, orderable: false },  //Cedula
+                                 { targets: [5], visible: true, searchable: true, orderable: false },//transacc
+                                 { targets: [6], visible: true, searchable: true, orderable: false },
+                                 { targets: [7], visible: true, searchable: true, orderable: false },
+                                 { targets: [8], visible: true, searchable: true, orderable: false },
+                                 { targets: [9], visible: true, searchable: true, orderable: false },
+                                 { targets: [10], visible: true, searchable: true, orderable: false },
+                                 { targets: [11], visible: true, searchable: true, orderable: false },
+                                {
+                                    targets: [12], visible: true, searchable: true, orderable: false,
+                                    render: function (data, type, full) {
+                                        return moment(data).format('DD/MM/YYYY HH:mm:ss')
+                                    }
+
+                                },//Fecha
+                                { targets: [13], visible: true, searchable: true, orderable: true },
+                                { targets: [14], visible: true, searchable: true, orderable: true },
+                                { targets: [15], visible: true, searchable: true, orderable: true }
+
+                        ],
+                        "columns": [
+
+                            { "data": "formulario" },
+                            { "data": "id" },
+                            { "data": "nombre" },
+                            { "data": "Cedula" },
+                            { "data": "correo" },
+                            { "data": "telefono" },
+                            { "data": "comentario" },
+                            { "data": "empresa" },
+                            { "data": "servicio" },
+                            { "data": "categoria" },
+                            { "data": "accion" },
+                            { "data": "tipo" },
+                            { "data": "fecha" },
+                            { "data": "agente" },
+                            { "data": "emisor_solicitud" },
+                            { "data": "tienda" },
+
+
+                            ]
+                        });
+
+
+                });
+        });
+
+
+
+    </script>
+
+
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+    <script>
+        $(function () {
+            $(".datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: "dd/MM/yy",
+                showOn: "both",
+                buttonText: "Desde"
+            });
+            $(".datepicker1").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: "dd/MM/yy",
+
+                showOn: "both",
+                buttonText: "Hasta"
+            });
+        });
+    </script>
+
+
+
+}
+

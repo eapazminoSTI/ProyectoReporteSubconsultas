@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewBag.Title - Reporte Agendamiento</title>
+
+    @*@Styles.Render("~/Content/css")*@
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container" style="margin-left:30px">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">REPORTERÍA CON SUBCONSULTAS</a>
+              
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav mr-auto">
+
+                    <li class="nav-item"> <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>@Html.ActionLink("Interacciones", "Index", "Home")</li>
+                    <li class="nav-item">@Html.ActionLink("Encuesta", "Index", "Encuesta")</li>
+                    <li>@Html.ActionLink("Log Transacciones IVR", "Index", "Log")</li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content" style="margin-top: 15px;">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - SeteInfo</p>
+        </footer>
+    </div>
+
+
+    @RenderSection("scripts", required: false)
+    @Scripts.Render("~/bundles/bootstrap")
+</body>
+</html>

@@ -1,0 +1,190 @@
+﻿@model AppReporteAgendamiento.Models.FiltroBusqueda
+
+@Html.LabelFor(model => model.fechaDesde, new { htmlAttributes = new { @class = "control-label col-md-2" } })
+<div class="form-group" >
+
+    <div class="col-md-10" style="padding-left: 0px;">
+
+        @Html.EditorFor(model => model.fechaDesde, new { htmlAttributes = new { @class = "datepicker", autocomplete = "off" } })
+        @Html.EditorFor(model => model.fechaHasta, new { htmlAttributes = new { @class = "datepicker1", autocomplete = "off" } })
+    </div>
+</div>
+
+<br />
+
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10" style="margin-left: 41%; margin-top: -3.5%;">
+        <input id="buscar" type="submit" value="Filtrar" class="btn btn-default" ,style="padding: 2px 12px !important;" />
+    </div>
+</div>
+
+<br />
+
+
+    <table id="encuestaTable" class="display" cellspacing="0" style="width:100%">
+        <thead>
+            <tr>
+                <th>ID INTERACCIÓN</th>
+                <th>CEDULA</th>
+                <th>NOMBRE CLIENTE</th>
+                <th>PREGUNTA 1</th>
+                <th>PREGUNTA 2</th>
+                <th>AGENTE</th>
+                <th>FECHA</th>
+
+        </thead>
+    </table>
+
+
+<a href="@Url.Action("ReporteEncuesta","Encuesta")">Exportar Reporte General</a>
+
+@section scripts{
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+    <script src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/plug-ins/1.10.12/sorting/datetime-moment.js"></script>
+    <link href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            tabla();
+
+                function tabla() {
+
+                    $("#encuestaTable").DataTable(
+                        {
+                            "ordering": false,
+                            'responsive': true,
+
+                        "ajax": {
+                            "url": '@Url.Action("GetList", "Encuesta")',
+                            "type": "POST",
+                            "dataSrc": "",
+                            "datatype": "json"
+                        },
+                             "columnDefs": [
+                                 { targets: [0], visible: true, searchable: true, orderable: false },
+                                 { targets: [1], visible: true, searchable: true, orderable: false },
+                                 { targets: [2], visible: true, searchable: true, orderable: true },
+                                 { targets: [3], visible: true, searchable: true, orderable: false },
+                                 { targets: [4], visible: true, searchable: true, orderable: false },
+                                 { targets: [5], visible: true, searchable: true, orderable: false },
+
+                                {
+                                    targets: [6], visible: true, searchable: true, orderable: false,
+                                    render: function (data, type, full) {
+                                        return moment(data).format('DD/MM/YYYY HH:mm:ss')
+                                    }
+
+                                 },//Fecha,
+
+
+                        ],
+                        "columns": [
+
+                            { "data": "conversationId" },
+                            { "data": "cedula" },
+                            { "data": "nombreCliente" },
+                            { "data": "pregunta1" },
+                            { "data": "pregunta2" },
+                            { "data": "nombreAgente" },
+                            { "data": "date" }
+
+                            ]
+                        });
+
+                }
+
+                $("#buscar").click(function (e) {
+
+                    $("#encuestaTable").dataTable().fnDestroy();
+
+                    $("#encuestaTable").DataTable(
+                        {
+                            "ordering": false,
+                            'responsive': true,
+                            "ajax": {
+                                "url": '@Url.Action("GetList", "Encuesta")',
+                                "data": {
+                                    "fecha": { "fechaDesde": $('#fechaDesde').val(), "fechaHasta": $('#fechaHasta').val() }
+                                },
+                                "dataSrc": "",
+                                "type": "POST",
+                                "datatype": "json"
+                            },
+                            "deferRender": true,
+
+                            "columnDefs": [
+
+                                {targets: [0], visible: true, searchable: true, orderable: false },
+                                { targets: [1], visible: true, searchable: true, orderable: false },
+                                { targets: [2], visible: true, searchable: true, orderable: true },
+                                { targets: [3], visible: true, searchable: true, orderable: false },
+                                { targets: [4], visible: true, searchable: true, orderable: false },
+                                { targets: [5], visible: true, searchable: true, orderable: false },
+                                {
+                                    targets: [6], visible: true, searchable: true, orderable: false,
+                                    render: function (data, type, full) {
+                                        return moment(data).format('DD/MM/YYYY HH:mm:ss')
+                                    }
+
+                                },//Fecha,
+
+                            ],
+
+                            "columns": [
+                                { "data": "conversationId" },
+                                { "data": "cedula" },
+                                { "data": "nombreCliente" },
+                                { "data": "pregunta1" },
+                                { "data": "pregunta2" },
+                                { "data": "nombreAgente" },
+                                { "data": "date" }
+
+                            ]
+
+                        });
+
+
+
+                });
+
+        });
+
+
+    </script>
+
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+    <script>
+        $(function () {
+            $(".datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: "dd/MM/yy",
+                showOn: "both",
+                buttonText: "Desde"
+            });
+            $(".datepicker1").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: "dd/MM/yy",
+
+                showOn: "both",
+                buttonText: "Hasta"
+            });
+        });
+    </script>
+
+
+
+}
+
+
+
